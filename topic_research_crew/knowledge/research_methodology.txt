@@ -1,0 +1,25 @@
+## Specific Strategic Research Methodologies:
+
+### SWOT Analysis (Strengths, Weaknesses, Opportunities, Threats):
+* Description: A framework for identifying and analyzing internal (Strengths & Weaknesses) and external (Opportunities & Threats) factors that affect an organization's strategic position.
+* Method: Often involves brainstorming, internal assessments, and external environmental scanning using various data sources.
+
+### PESTEL Analysis (Political, Economic, Social, Technological, Environmental, Legal):
+* Description: A framework for analyzing the macro-environmental factors that can impact an organization or industry.
+* Method: Involves environmental scanning and gathering information from various sources related to each PESTEL category.
+
+### Porter's Five Forces Analysis:
+* Description: A framework for analyzing the competitive forces within an industry to understand industry attractiveness and profitability.
+* Method: Involves industry research and analysis to assess: threat of new entrants, bargaining power of suppliers, bargaining power of buyers, threat of substitute products or services, and intensity of rivalry among existing competitors.
+
+### Scenario Planning:
+* Description: A structured process for developing multiple plausible future scenarios to anticipate potential changes and inform strategic decision-making under uncertainty.
+* Method: Involves identifying key driving forces, developing scenario logics, and creating narratives for each scenario.
+
+### Competitive Benchmarking:
+* Description: Comparing an organization's practices, performance, and strategies against industry leaders or best-in-class competitors to identify areas for improvement.
+* Method: Involves collecting data on competitors, analyzing their strategies and performance metrics, and identifying best practices.
+
+### Trend Analysis & Forecasting:
+* Description: Identifying and analyzing patterns and trends in data to predict future outcomes or developments.
+* Method: Uses statistical techniques, time series analysis, and expert judgment to extrapolate trends into the future.

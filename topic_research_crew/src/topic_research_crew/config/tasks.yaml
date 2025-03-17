@@ -1,0 +1,108 @@
+# research_task:
+#   description: >
+#     Analyze the research topic {topic} and achieve the research goal {researchgoal} 
+#   expected_output: >
+#     A well-organized and detailed research summary report on {topic} that includes the research methodology, key insights, and actionable recommendations, fulfilling the research goal: {researchgoal}.
+#     Formatted as markdown without '```'
+#   agent: manager
+
+research_planning_task:
+  description: >
+    Before planning, **thoroughly and deeply analyze** and understand the research goal: {researchgoal} of {year}.  
+    **Think critically and from multiple perspectives to ensure comprehensive coverage.
+    ** Then, decompose the research goal into a series of focused sub-tasks(max 8 sub-tasks).
+    For each sub-task, identify:
+      1. **Search Keywords**: Provide max 3 **refined and targeted** search queries (using quotes, boolean operators, **semantic search if applicable**, connect with OR) 如果涉及中国企业，请用中文搜索词. **Consider incorporating industry-specific terminology, trend analysis keywords, and competitive landscape related terms to enhance search precision.**
+      2. **Prioritization**: Rank the sub-tasks by their importance.
+      3. **Data Source Suggestions**: **Suggest potential types of data sources relevant to each sub-task (e.g., industry reports, academic papers, patent databases, expert interviews, etc.) to guide subsequent data extraction towards deeper insights.**
+  expected_output: >
+    A structured, concise plan in Markdown format, utilizing tables and bullet points for clarity. The output should minimize verbosity to facilitate quick comprehension and action by subsequent agents. 
+    Sample output:   
+    
+    ## Research Plan:招商银行 (China Merchants Bank) AI & Large Model布局 (Layout/Strategy) (2023-2024)
+    
+    ### Research Goal & understanding:
+    To thoroughly understand 招商银行's (China Merchants Bank - CMB) AI and specifically Large Language Model (LLM) strategy over the past two years (2023-2024), focusing on both business applications and technological infrastructure, we will decompose the research into the following sub-tasks;
+    
+    ### Sub-task Details, Search Queries, Prioritization & Data Sources:
+    | **Sub-task** | **Search Keywords (Max 3 per language)** | **Prioritization Rank** | **Data Source Suggestions (Prioritized for Depth & Authority)** |
+    |---|---|---|---|
+    | **1. Overall AI Strategy & Vision** | **Chinese:**  "招商银行" "人工智能战略"  OR  "招商银行" "AI布局" OR  "招商银行" "大模型 战略规划" <br> **English:** "China Merchants Bank" "AI strategy" OR "China Merchants Bank" "AI vision" OR "China Merchants Bank" "Large Language Model strategy" | 1 | * **Company Information & Financial Data:**  招商银行 Annual Reports, Investor Relations presentations, ESG reports (look for strategy sections, technology/innovation discussions). <br> * **News & Media Sources:** Reputable Chinese financial news outlets (e.g., 财新网, 证券时报, 21世纪经济报道), Bloomberg China, Reuters, Financial Times (search archives for CMB mentions and AI). <br> * **Industry & Market Reports:**  China Banking Association reports, reports from Chinese financial industry research firms (e.g., 艾瑞咨询, 易观分析) focusing on bank AI adoption.  Gartner, McKinsey, BCG reports on AI in banking (global & China focus if available). |
+
+  agent: principal_researcher
+
+data_extraction_task:
+  description: >
+    Review the context you got, strictly following the research plan, especially the suggested search keywords,
+    Utilize SerperDevTool to collect data from online sources for each sub-task. 
+    Focus on information that supports the research goal {researchgoal} of {year}. And pay attention to the time of the information to ensure the information is matching the research duration of {year}.
+  expected_output: >
+    For each sub-tasks, extract a list with 8 reference source of the most relevant information about {researchgoal} 
+    Include the reference source of the information, such as the title of the information, the date of the information, and the url of the information.
+    Formatted as markdown without '```'
+    Sample output:
+    ---
+    ### Subtask: **1. Identify Global Leading Automakers in AI Development**
+    1. **Top Companies Leading AI Investments in 2024: A Global Overview**  
+      - Date: 2024  
+      - URL: [https://www.linkedin.com/pulse/top-companies-leading-ai-investments-2024-global-overview-ansal-mt-u7gyc](https://www.linkedin.com/pulse/top-companies-leading-ai-investments-2024-global-overview-ansal-mt-u7gyc)  
+    2. xxx
+    ...
+
+    ### Subtask: **2. xxx **
+    ...
+    ---
+  agent: data_extraction_specialist
+
+analysis_task:
+  description: >
+    Review the context you got, following the research plan, and study the extracted websites content.
+    Some of the websites are not relevant to the research goal, so you need to filter out the irrelevant information.
+    Based on the specified websites which verified to be relevant to the research goal, **thoroughly and deeply analyze** the content to generate **deep and strategic insights** and ensure these findings directly support and address the research goal: {researchgoal}. **Employ critical thinking and analyze information from multiple perspectives to uncover nuanced understandings.**
+    * For each insight, explicitly cite the relevant website(s) and specific content (e.g., section headings, key sentences, data points) that support the insight.
+    * Provide a clear rationale for each insight, explaining how the extracted data leads to the conclusion. **Go beyond surface-level descriptions and explain the underlying logic and significance.**
+    * Where the extracted data presents conflicting information or uncertainties, highlight these inconsistencies and offer potential explanations. **Engage in dialectical thinking, questioning assumptions and exploring alternative interpretations.**
+    * **Consider employing a structured analysis framework (e.g., SWOT, PESTEL - adapt based on {researchgoal}) to systematically analyze the data.**
+    Finally, identify gaps in the data, suggesting additional focused research areas that could strengthen the analysis. Prioritize these gaps based on their potential impact on the research goal.
+  expected_output: >
+    A comprehensive analysis report featuring **deep and strategic insights**, and identified areas for further research, addressing {researchgoal}, 
+    also include the appendix with complete reference sources. 
+    **Insights should not just be conclusions, but also explain the reasoning, derivation process, and strategic implications for the research goal.**
+    Ensure to use Chinese in the report, and formatted as markdown without '```'
+  agent: senior_researcher
+  context:
+    - research_planning_task
+    - data_extraction_task
+
+insight_synthesis_task:
+  description: >
+    Review the initial analysis report from the Senior Researcher.
+    Your task is to synthesize and refine the identified insights to achieve greater depth and impact.
+    1. **Identify Common Themes**: Look for common themes and patterns across the initial insights.
+    2. **Deepen Analysis**: For each theme, delve deeper into the supporting evidence and explore underlying causes, consequences, and interrelationships.
+    3. **Challenge Assumptions**: Critically examine the assumptions underlying the initial insights and explore alternative interpretations.
+    4. **Synthesize New Insights**: Based on the deeper analysis and theme identification, synthesize new, more profound insights that go beyond the initial findings.
+    5. **Refine Existing Insights**:  Refine the wording and presentation of existing insights to enhance clarity, conciseness, and impact.
+  expected_output: >
+    A revised analysis report that features synthesized and refined insights, demonstrating greater depth and analytical rigor compared to the initial report. 
+    Highlight the key changes and improvements made to the initial insights.
+    Ensure to use Chinese in the report, and formatted as markdown without '```'
+  agent: senior_researcher
+  context:
+    - analysis_task
+
+# expert_review_task:
+#   description: >
+#     Review the final research report. As a domain expert in {research_domain} (根据研究主题替换), your task is to evaluate the report's:
+#     1. **Accuracy and Validity**: Assess the accuracy of the information and the validity of the analysis and conclusions.
+#     2. **Depth and Comprehensiveness**: Evaluate the depth of analysis and the comprehensiveness of the coverage of the research goal.
+#     3. **Insightfulness and Originality**: Judge the insightfulness and originality of the findings.
+#     4. **Clarity and Presentation**: Review the clarity of writing and the overall presentation of the report.
+#     Provide constructive feedback and suggest areas for improvement to enhance the report's quality and impact.
+#   expected_output: >
+#     A Markdown formatted expert review report, providing detailed feedback on the research report and suggesting specific improvements.
+#     Ensure to use Chinese in the report, and formatted as markdown without '```'
+#   agent: principal_researcher
+#   context:
+#     - analysis_task
+#     - insight_synthesis_task
