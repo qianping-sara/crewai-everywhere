@@ -8,10 +8,18 @@ from crewai import Agent
 from topic_research_crew.crew import TopicResearchCrew
 import agentops
 import subprocess
+import logging
+from agentops import Record_tool
+
+# 设置日志级别
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # 加载环境变量
 load_dotenv()
-
 
 # 忽略所有 Pydantic 相关的警告
 warnings.filterwarnings("ignore", category=DeprecationWarning, module="pydantic")
@@ -23,22 +31,40 @@ def run():
     Run the crew.
     """
     inputs = {
-        'researchgoal': '我想了解招行近两年在AI（尤其关注大模型相关）方面的布局，关注业务与科技两侧的布局',
+        'researchgoal': '我想了解招行科技侧25年在大模型方面的布局和举措',
         'year': '2025',
-        'research_domain': '金融、科技、AI、大模型'
+        'research_domain': '金融科技、大模型'
     }
     try:
-        if os.getenv("AGENTOPS_API_KEY"):
-            session = agentops.init(api_key=os.getenv("AGENTOPS_API_KEY"))
+        agentops_api_key = os.getenv("AGENTOPS_API_KEY")
+        if agentops_api_key:
+            logger.info("Initializing AgentOps with API key...")
+            try:
+                # 初始化 AgentOps
+                session = agentops.init(api_key=agentops_api_key, tags=["TopicResearchCrew"])
+                logger.info("AgentOps initialized successfully")
+            except Exception as e:
+                logger.error(f"Failed to initialize AgentOps: {str(e)}")
         else:
-            session = None
-        TopicResearchCrew().crew().kickoff(inputs=inputs)
+            logger.warning("AGENTOPS_API_KEY not found in environment variables")
+            
+        kickoff()
+       
     except Exception as e:
+        logger.error(f"An error occurred while running the crew: {str(e)}", exc_info=True)
         raise Exception(f"An error occurred while running the crew: {e}")
     finally:
         if session:
             session.end_session()
-    
+
+@Record_tool("TopicResearchCrew")
+def kickoff():
+    """
+    Kickoff the crew.
+    """
+    logger.info("Starting TopicResearchCrew execution...")
+    TopicResearchCrew().crew().kickoff(inputs=inputs)
+    logger.info("TopicResearchCrew execution completed successfully")
 
 def replay(task_id):
   """

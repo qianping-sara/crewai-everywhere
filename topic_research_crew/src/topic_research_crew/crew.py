@@ -1,6 +1,6 @@
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
-from crewai_tools import SerperDevTool
+from crewai_tools import SerperDevTool,ScrapeWebsiteTool
 import os
 from dotenv import load_dotenv
 from crewai.knowledge.source.text_file_knowledge_source import TextFileKnowledgeSource
@@ -60,6 +60,7 @@ class TopicResearchCrew():
 		return Agent(
 			config=self.agents_config['senior_researcher'],
 			verbose=True,
+			tools=[ScrapeWebsiteTool()],
 			llm=self.gemini_2_flash_lite_llm
 		)
  
@@ -76,12 +77,14 @@ class TopicResearchCrew():
 	def data_extraction_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['data_extraction_task'],
+   			tools=[SerperDevTool()],
 			output_file='output/02_data_extraction_report.md'
 		)
 	@task
 	def analysis_task(self) -> Task:
 		return Task(
 			config=self.tasks_config['analysis_task'],
+   			tools=[ScrapeWebsiteTool()],
 			output_file='output/03_analysis_report.md'
 		)
 	@task

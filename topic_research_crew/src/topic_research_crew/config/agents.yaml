@@ -39,7 +39,7 @@ senior_researcher:
   role: >
     Senior Researcher
   goal: >
-    Uncover cutting-edge developments in research goal: {researchgoal}
+    Uncover cutting-edge developments in research goal: {researchgoal}, read through the info collected by the data extraction specialist,
     Conduct **deep and insightful analysis** of the aggregated data to extract **profound** insights and validate that the findings meet the research goal: {researchgoal}. 
     **Aim to go beyond surface-level observations and identify underlying trends, causal relationships, and strategic implications.**
   backstory: >
