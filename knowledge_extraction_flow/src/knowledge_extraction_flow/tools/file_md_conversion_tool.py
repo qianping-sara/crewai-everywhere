@@ -10,32 +10,31 @@ from pydantic import BaseModel, Field
 logger = logging.getLogger(__name__)
 
 
-class FileConversionToolInput(BaseModel):
-    """Input schema for FileConversionToolInput."""
+class FileMdConversionToolInput(BaseModel):
+    """Input schema for FileMdConversionToolInput."""
 
     file_uri: str = Field(..., description="已上传文件的URI，通过FileUploadTool获取")
     api_key: Optional[str] = Field(None, description="Google AI API Key，如不提供将从环境变量GEMINI_API_KEY获取")
     model_name: Optional[str] = Field(None, description="要使用的Gemini模型名称，不提供则从环境变量GEMINI_DOC_MODEL获取")
 
 
-class FileConversionResponse(BaseModel):
-    """FileConversionTool的响应模型"""
+class FileMdConversionResponse(BaseModel):
+    """FileMdConversionTool的响应模型"""
     
     success: bool = Field(..., description="操作是否成功")
     markdown_content: Optional[str] = Field(None, description="转换后的markdown内容")
     original_file_uri: Optional[str] = Field(None, description="原始文件的URI")
     error: Optional[str] = Field(None, description="如果操作失败，包含错误信息")
-    model_used: Optional[str] = Field(None, description="实际使用的模型名称")
 
 
-class FileConversionTool(BaseTool):
-    name: str = "File Conversion Tool"
+class FileMdConversionTool(BaseTool):
+    name: str = "File Md Conversion Tool"
     description: str = (
         "将上传到Google AI服务的文件内容转换为规范的Markdown格式。此工具需要接收已上传文件的URI，然后使用Gemini模型进行内容转换。"
     )
-    args_schema: Type[BaseModel] = FileConversionToolInput
+    args_schema: Type[BaseModel] = FileMdConversionToolInput
 
-    def _run(self, file_uri: str, api_key: Optional[str] = None, model_name: Optional[str] = None) -> FileConversionResponse:
+    def _run(self, file_uri: str, api_key: Optional[str] = None, model_name: Optional[str] = None) -> FileMdConversionResponse:
         """
         将文件转换为markdown格式
         
@@ -45,7 +44,7 @@ class FileConversionTool(BaseTool):
             model_name: 要使用的Gemini模型名称，不提供则从环境变量获取
             
         Returns:
-            FileConversionResponse对象，包含转换结果
+            FileMdConversionResponse对象，包含转换结果
         """
         
         logger.info("Converting file to md: %s", file_uri)
@@ -135,16 +134,15 @@ class FileConversionTool(BaseTool):
             # 提取转换后的markdown内容
             markdown_content = response.text
             
-            return FileConversionResponse(
+            return FileMdConversionResponse(
                 success=True,
                 markdown_content=markdown_content,
-                original_file_uri=file_uri,
-                model_used=doc_model
+                original_file_uri=file_uri
             )
             
         except Exception as e:
             logger.error("Error converting file: %s", str(e))
-            return FileConversionResponse(
+            return FileMdConversionResponse(
                 success=False,
                 error=str(e)
             )

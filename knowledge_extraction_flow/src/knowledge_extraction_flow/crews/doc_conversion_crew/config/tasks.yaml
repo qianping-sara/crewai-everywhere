@@ -32,7 +32,7 @@ upload_file_to_google_task:
   
 format_document_to_markdown_task:
   description: >
-        使用FileConversionTool将已上传的文件转换为规范的Markdown格式。
+        使用FileMdConversionTool将已上传的文件转换为规范的Markdown格式。
         
         <使用说明>
         1. 需要提供已上传文件的URI（从FileUploadTool的返回结果中获取）
@@ -48,7 +48,6 @@ format_document_to_markdown_task:
         - success: 操作是否成功
         - markdown_content: 转换后的markdown内容
         - original_file_uri: 原始文件的URI
-        - model_used: 实际使用的模型名称
         - error: 如果失败，包含错误信息
         
         <错误处理>
@@ -56,7 +55,7 @@ format_document_to_markdown_task:
         - success: false
         - error: 错误描述
   expected_output: >
-        包含转换后markdown内容的FileConversionResponse对象，包括success、markdown_content、original_file_uri、model_used等字段。
+        包含转换后markdown内容的FileMdConversionResponse对象，包括success、markdown_content、original_file_uri等字段。
         如果转换失败，将返回包含错误信息的对象。
   agent: md_formatter
 
