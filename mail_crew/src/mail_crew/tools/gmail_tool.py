@@ -3,7 +3,10 @@ from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
 from .gmail_utility import authenticate_gmail, create_message, create_draft, send_email
 import os
-from agentops import Record_tool
+from agentops import Client
+
+# 初始化 AgentOps 客户端
+agentops_client = Client()
 
 class GmailToolInput(BaseModel):
     """Input schema for GmailTool."""
@@ -11,7 +14,6 @@ class GmailToolInput(BaseModel):
     researchgoal: str = Field(..., description="The research goal to use in the email subject.")
     should_send: bool = Field(default=False, description="Whether to send the email immediately or just create a draft.")
 
-@Record_tool("GmailTool")
 class GmailTool(BaseTool):
     name: str = "GmailTool"
     description: str = (

@@ -39,7 +39,7 @@ def run():
     
     try:
         if os.getenv("AGENTOPS_API_KEY"):
-            session = agentops.init(api_key=os.getenv("AGENTOPS_API_KEY"))
+            session = agentops.init(api_key=os.getenv("AGENTOPS_API_KEY"),tags=["mail_crew"])
         else:
             session = None
             logger.warning("AGENTOPS_API_KEY not found, running without AgentOps")

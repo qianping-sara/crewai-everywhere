@@ -48,7 +48,9 @@ def run():
         else:
             logger.warning("AGENTOPS_API_KEY not found in environment variables")
             
-        kickoff()
+        logger.info("Starting TopicResearchCrew execution...")
+        TopicResearchCrew().crew().kickoff(inputs=inputs)
+        logger.info("TopicResearchCrew execution completed successfully")
        
     except Exception as e:
         logger.error(f"An error occurred while running the crew: {str(e)}", exc_info=True)
@@ -57,14 +59,7 @@ def run():
         if session:
             session.end_session()
 
-@Record_tool("TopicResearchCrew")
-def kickoff():
-    """
-    Kickoff the crew.
-    """
-    logger.info("Starting TopicResearchCrew execution...")
-    TopicResearchCrew().crew().kickoff(inputs=inputs)
-    logger.info("TopicResearchCrew execution completed successfully")
+
 
 def replay(task_id):
   """
