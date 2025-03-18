@@ -1,0 +1,63 @@
+upload_file_to_google_task:
+  description: >
+        将指定文件上传到Google AI服务，并获取文件信息用于后续操作。此任务使用FileUploadTool工具，通过Google AI API完成文件上传。
+        
+        <使用说明>
+        1. 需要提供本地文件路径: {filePath}
+        2. 系统将使用环境变量GEMINI_API_KEY作为API密钥
+        3. 支持的文件类型包括：
+           - 文本文件（.txt, .md等）
+           - PDF文档（.pdf）
+           - 图像文件（.jpg, .png等）
+           - 音频文件（.mp3, .wav等）
+           - 视频文件（支持常见格式）
+        
+        <输出说明>
+        工具将返回包含以下信息的字典：
+        - name: 文件唯一标识符
+        - uri: 文件URI，用于后续API调用引用该文件
+        - display_name: 文件显示名称
+        - mime_type: 文件MIME类型
+        - state: 文件处理状态
+        - size_bytes: 文件大小（字节）
+        
+        <错误处理>
+        如果上传过程中出现错误，将返回包含错误信息的字典：
+        - error: 错误描述
+        - success: false
+  expected_output: >
+        包含文件信息的JSON对象，包括name、uri、display_name、mime_type、state和size_bytes等字段。
+        这些信息可用于后续操作中引用该文件。
+  agent: google_file_processor
+  
+format_document_to_markdown_task:
+  description: >
+        使用FileConversionTool将已上传的文件转换为规范的Markdown格式。
+        
+        <使用说明>
+        1. 需要提供已上传文件的URI（从FileUploadTool的返回结果中获取）
+        2. 系统将使用环境变量GEMINI_API_KEY作为API密钥
+        3. 系统将使用环境变量GEMINI_DOC_MODEL作为文档转换模型（可选，默认使用gemini-2.0-flash-lite）
+        
+        <输入要求>
+        - file_uri: 已上传文件的URI（必填）
+        - model_name: 要使用的Gemini模型名称（可选）
+        
+        <输出说明>
+        工具将返回包含以下信息的对象：
+        - success: 操作是否成功
+        - markdown_content: 转换后的markdown内容
+        - original_file_uri: 原始文件的URI
+        - model_used: 实际使用的模型名称
+        - error: 如果失败，包含错误信息
+        
+        <错误处理>
+        如果转换过程中出现错误，将返回包含错误信息的对象：
+        - success: false
+        - error: 错误描述
+  expected_output: >
+        包含转换后markdown内容的FileConversionResponse对象，包括success、markdown_content、original_file_uri、model_used等字段。
+        如果转换失败，将返回包含错误信息的对象。
+  agent: md_formatter
+
+
